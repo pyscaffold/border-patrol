@@ -1,4 +1,8 @@
-# Border-Patrol
+[![ReadTheDocs](https://readthedocs.org/projects/border-patrol/badge/?version=latest)](https://border-patrol.readthedocs.io/en/latest/?badge=latest)
+[![Coveralls](https://coveralls.io/r/pyscaffold/border-patrol)](https://img.shields.io/coveralls/github/pyscaffold/border-patrol/master.svg)
+[![PyPI-Server](https://pypi.org/project/border-patrol/)](https://img.shields.io/pypi/v/border-patrol.svg)    
+
+# Border-Patrol 
 
 Border-Patrol logs all imported packages and their version to support you during debugging. In 95% of all cases when
 something suddenly breaks in production it is due to some different version in one of your requirements. Pinning down the
