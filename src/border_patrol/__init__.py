@@ -149,7 +149,7 @@ class BorderPatrol(object):
 
     def __str__(self):
         msg = ["Python version is {}".format(sys.version)]
-        msg += ["Following modules were imported:"]
+        msg += ["Following packages were imported:"]
         template = "{}   {}   {}"
 
         report = self.report()
