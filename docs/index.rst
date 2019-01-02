@@ -14,7 +14,7 @@ end of your application, even if it crashed.
 Usage
 =====
 
-Border-Patrol is really simple to use, just install it with `pip install border-patrol`
+Border-Patrol is really simple to use, just install it with ``pip install border-patrol``
 and import it before any other package, e.g.::
 
     from border_patrol import with_print

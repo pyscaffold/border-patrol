@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+Main module holding the actual functionality of Border-Patrol
+"""
 import sys
 import os.path
 import inspect
@@ -21,15 +24,19 @@ __file__ = os.path.join(
     os.getcwd(), os.path.dirname(inspect.getfile(inspect.currentframe())))
 
 
-class DefaultDict(dict):
+class IdentityDict(dict):
+    """Dictionary returning key by default"""
     def __missing__(self, key):
         return key
 
 
 def get_pkg_to_dist_map():
-    """Generates Mapping of packages to distributions
+    """Generates mapping of packages to distributions
+
+    Returns:
+        dict: mapping of packages to distributions
     """
-    mapping = DefaultDict()
+    mapping = IdentityDict()
     for dist in working_set:
         try:
             pkgs = dist.get_metadata('top_level.txt')
@@ -41,12 +48,16 @@ def get_pkg_to_dist_map():
     return mapping
 
 
-def get_package(package):
-    return package.__name__.split('.')[0]
+def get_package(module):
+    """Gets package part of module
 
+    Args:
+        module: module instance
 
-def package_name(package):
-    return package.__name__
+    Returns:
+        str: name of module's package
+    """
+    return module.__name__.split('.')[0]
 
 
 def package_version(package, pkg_to_dist_map=None):
@@ -75,11 +86,25 @@ def package_version(package, pkg_to_dist_map=None):
 
 
 def package_path(package):
+    """Retrieves path of package
+
+    Args:
+        package: module instance of package
+
+    Returns:
+        str: path of package
+    """
     return getattr(package, "__file__", UNKNOWN)
 
 
 class BorderPatrol(object):
-    # Define this class as singleton
+    """Border-Patrol singleton tracking imports
+
+    Args:
+        report_fun (callable): output function for reporting imports
+        ignore_std_lib (bool): ignore imports of Python's stdlib
+    """
+    # defines this class as singleton
     def __new__(cls, *args, **kwargs):
         it = cls.__dict__.get("__it__")
         if it is not None:
@@ -104,11 +129,17 @@ class BorderPatrol(object):
         self.packages = getattr(self, 'packages', [builtin_import(__name__)])
 
     def __call__(self, *args, **kwargs):
+        """Wraps the builtin import to track libraries"""
         module = builtin_import(*args, **kwargs)
         self.track(module)
         return module
 
     def track(self, module):
+        """Tracks packages for later reporting
+
+        Args:
+            module: module instance
+        """
         if module.__name__ in BUILTINS:
             return
         package = builtin_import(get_package(module))
@@ -116,6 +147,11 @@ class BorderPatrol(object):
             self.packages.append(package)
 
     def register(self):
+        """Registers/activates Border Patrol
+
+        Returns:
+            self: Border-Patrol instance
+        """
         if not self.registered:
             builtins.__import__ = self
             atexit.register(self.at_exit)
@@ -123,6 +159,11 @@ class BorderPatrol(object):
         return self
 
     def unregister(self):
+        """UnRegisters/deactivates Border Patrol
+
+        Returns:
+            self: Border-Patrol instance
+        """
         if self.registered:
             builtins.__import__ = builtin_import
             atexit.unregister(self.at_exit)
@@ -130,13 +171,18 @@ class BorderPatrol(object):
         return self
 
     def report(self):
+        """Reports currently imported libraries
+
+        Returns:
+            list: list of package's (name, version, path)
+        """
         packages = self.packages
         pkg_to_dist_map = get_pkg_to_dist_map()
         if self.ignore_std_lib:
             packages = [package for package in packages
                         if package.__name__ in pkg_to_dist_map.keys()]
 
-        return [(package_name(package),
+        return [(package.__name__,
                  package_version(package, pkg_to_dist_map),
                  package_path(package))
                 for package in packages]
@@ -145,6 +191,7 @@ class BorderPatrol(object):
         return str(self.report())
 
     def at_exit(self):
+        """Handler to be called at exit"""
         self.report_fun(str(self))
 
     def __str__(self):
