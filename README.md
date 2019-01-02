@@ -1,6 +1,6 @@
 [![ReadTheDocs](https://readthedocs.org/projects/border-patrol/badge/?version=latest)](https://border-patrol.readthedocs.io/en/latest/?badge=latest)
-[![Coveralls](https://coveralls.io/r/pyscaffold/border-patrol)](https://img.shields.io/coveralls/github/pyscaffold/border-patrol/master.svg)
-[![PyPI-Server](https://pypi.org/project/border-patrol/)](https://img.shields.io/pypi/v/border-patrol.svg)    
+[![Coveralls](https://img.shields.io/coveralls/github/pyscaffold/border-patrol/master.svg)](https://coveralls.io/r/pyscaffold/border-patrol)
+[![PyPI-Server](https://img.shields.io/pypi/v/border-patrol.svg)](https://pypi.org/project/border-patrol/)    
 
 # Border-Patrol 
 
