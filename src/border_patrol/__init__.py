@@ -162,8 +162,7 @@ class BorderPatrol(object):
             'VERSION'.ljust(version_just),
             'PATH'.ljust(path_just)
             ))
-        for row in sorted(report, key=itemgetter(0)):
-            name, version, path = row
+        for name, version, path in sorted(report, key=itemgetter(0)):
             msg.append(template.format(
                 name.ljust(name_just),
                 version.ljust(version_just),
