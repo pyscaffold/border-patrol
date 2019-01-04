@@ -2,7 +2,6 @@
 """
 Import this module to let Border-Patrol use logging with level DEBUG
 """
-import logging
-from . import BorderPatrol
+from . import BorderPatrol, logger
 
-BorderPatrol(report_fun=logging.debug).register()
+BorderPatrol(report_fun=logger.debug).register()

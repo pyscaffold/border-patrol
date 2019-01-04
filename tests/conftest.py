@@ -8,4 +8,11 @@
     https://pytest.org/latest/plugins.html
 """
 
-# import pytest
+import pytest
+
+
+@pytest.fixture()
+def border_patrol():
+    """Return BorderPatrol singleton"""
+    from border_patrol import BorderPatrol
+    return BorderPatrol()

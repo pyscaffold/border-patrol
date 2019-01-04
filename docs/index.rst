@@ -5,7 +5,8 @@ Border-Patrol
 Border-Patrol logs all imported packages and their version to support you while debugging. In 95% of all cases when
 something suddenly breaks in production it is due to some different version in one of your requirements. Pinning down the
 versions of all your dependencies and dependencies of dependencies inside a virtual environments helps you to overcome
-this problem but is quite cumbersome and thus this method is not always applied in practice.
+this problem but is quite cumbersome and thus this method is not always applied in practice. Also sometimes, like when
+you are using PySpark, you might not be 100% sure which library versions are installed on some cluster nodes.
 
 With Border-Patrol you can easily find the culprit by looking in the logs of the last working versions and compare it
 to the failing one since Border-Patrol will list all imported packages and their corresponding version right at the
@@ -17,29 +18,34 @@ Usage
 Border-Patrol is really simple to use, just install it with ``pip install border-patrol``
 and import it before any other package, e.g.::
 
-    from border_patrol import with_print
+    from border_patrol import with_print_stdout
 
-    import numpy as np
-    import scipy as sp
-    import sklearn
+    import pandas as pd
 
 If you run those lines in a script, you will get a similar output to this one::
 
     Python version is 3.6.7 |Anaconda, Inc.| (default, Oct 23 2018, 14:01:38)
     [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
-    Following modules were imported:
+    Following packages were imported:
     PACKAGE         VERSION   PATH
     border_patrol   0.1       /Users/fwilhelm/Sources/border_patrol/src/border_patrol
-    numpy           1.15.1    /Users/fwilhelm/anaconda/envs/venv/lib/python3.6/site-packages/numpy/__init__.py
-    scipy           1.1.0     /Users/fwilhelm/anaconda/envs/venv/lib/python3.6/site-packages/scipy/__init__.py
-    sklearn         0.19.2    /Users/fwilhelm/anaconda/envs/venv/lib/python3.6/site-packages/sklearn/__init__.py
+    cycler          0.10.0    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/cycler.py
+    dateutil        2.7.5     /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/dateutil/__init__.py
+    matplotlib      2.2.3     /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/matplotlib/__init__.py
+    numpy           1.15.1    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/numpy/__init__.py
+    pandas          0.23.4    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pandas/__init__.py
+    pyparsing       2.3.0     /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pyparsing.py
+    pytz            2018.7    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pytz/__init__.py
+    six             1.11.0    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/six.py
 
-If you import ``with_print``, Border-Patrol will use ``print`` as output function. Since most production applications
-will rather use the ``logging`` module, you can tell Border-Patrol to use it by importing ``with_log_{error|warning|info|debug}``.
+If you import ``with_print_stdout``, Border-Patrol will use ``print`` as output function whereas ``with_print_stderr`` will
+print to standard error. Since most production applications will rather use the ``logging`` module, you can tell
+Border-Patrol to use it by importing ``with_log_{error|warning|info|debug}``.
 For instance ``from border_patrol import with_log_info`` will log the final report by using the ``INFO`` logging level.
 
 If you want even more fine grained control you can import the ``BorderPatrol`` class directly from the ``border_patrol`` package
-and use the ``register()`` and ``unregister()`` method to activate and deactivate it, respectively.
+and use the ``register()`` and ``unregister()`` method to activate and deactivate it, respectively. At any point the
+tracking can be circumvented by using ``border_patrol.builtin_import``.
 
 
 How does it work?

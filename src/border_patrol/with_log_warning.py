@@ -2,7 +2,6 @@
 """
 Import this module to let Border-Patrol use logging with level WARNING
 """
-import logging
-from . import BorderPatrol
+from . import BorderPatrol, logger
 
-BorderPatrol(report_fun=logging.warning).register()
+BorderPatrol(report_fun=logger.warning).register()

@@ -23,6 +23,8 @@ except DistributionNotFound:
 __file__ = os.path.join(
     os.getcwd(), os.path.dirname(inspect.getfile(inspect.currentframe())))
 
+logger = logging.getLogger(__name__)
+
 
 class IdentityDict(dict):
     """Dictionary returning key by default"""
