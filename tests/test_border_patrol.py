@@ -58,7 +58,7 @@ def test_dont_ignore_stdlib(border_patrol):
     report = border_patrol.report()
     assert len(report) > 1
     pkgs, _, _ = zip(*report)
-    assert 'math' in pkgs
+    assert 'os' in pkgs
 
 
 def test_singleton_constructor(border_patrol):
