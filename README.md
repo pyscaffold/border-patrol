@@ -2,7 +2,7 @@
 [![Coveralls](https://img.shields.io/coveralls/github/pyscaffold/border-patrol/master.svg)](https://coveralls.io/r/pyscaffold/border-patrol)
 [![PyPI-Server](https://img.shields.io/pypi/v/border-patrol.svg)](https://pypi.org/project/border-patrol/)
 
-# Border-Patrol 
+# Border-Patrol
 
 Border-Patrol logs all imported packages and their version to support you while debugging. In 95% of all cases when
 something suddenly breaks in production it is due to some different version in one of your requirements. Pinning down the
@@ -29,7 +29,7 @@ If you run those lines in a script, you will get a similar output to this one:
 Python version is 3.6.7 |Anaconda, Inc.| (default, Oct 23 2018, 14:01:38)
 [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
 Following packages were imported:
-PACKAGE         VERSION   PATH                       
+PACKAGE         VERSION   PATH
 border_patrol   0.1       /Users/fwilhelm/Sources/border_patrol/src/border_patrol
 cycler          0.10.0    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/cycler.py
 dateutil        2.7.5     /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/dateutil/__init__.py
@@ -37,7 +37,7 @@ matplotlib      2.2.3     /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packa
 numpy           1.15.1    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/numpy/__init__.py
 pandas          0.23.4    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pandas/__init__.py
 pyparsing       2.3.0     /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pyparsing.py
-pytz            2018.7    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pytz/__init__.py 
+pytz            2018.7    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pytz/__init__.py
 six             1.11.0    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/six.py
 ```
 

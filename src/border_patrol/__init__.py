@@ -82,7 +82,8 @@ def package_version(package, pkg_to_dist_map=None):
         try:
             dist_name = pkg_to_dist_map[package.__name__]
             version = get_distribution(dist_name).version
-        except Exception:  # Never fail and it's more than just DistributionNotFound
+        # Never fail and it's more than just DistributionNotFound
+        except Exception:
             pass
     return version
 
@@ -210,11 +211,11 @@ class BorderPatrol(object):
             'PACKAGE'.ljust(name_just),
             'VERSION'.ljust(version_just),
             'PATH'.ljust(path_just)
-            ))
+        ))
         for name, version, path in sorted(report, key=itemgetter(0)):
             msg.append(template.format(
                 name.ljust(name_just),
                 version.ljust(version_just),
                 path.ljust(path_just)
-                ))
+            ))
         return '\n'.join(msg)
