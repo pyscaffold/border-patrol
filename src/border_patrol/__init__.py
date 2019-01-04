@@ -42,7 +42,7 @@ def get_pkg_to_dist_map():
     for dist in working_set:
         try:
             pkgs = dist.get_metadata('top_level.txt')
-        except:
+        except Exception:
             pass
         else:
             for pkg in pkgs.split():
@@ -82,7 +82,7 @@ def package_version(package, pkg_to_dist_map=None):
         try:
             dist_name = pkg_to_dist_map[package.__name__]
             version = get_distribution(dist_name).version
-        except:  # Never fail and it's more than just DistributionNotFound
+        except Exception:  # Never fail and it's more than just DistributionNotFound
             pass
     return version
 

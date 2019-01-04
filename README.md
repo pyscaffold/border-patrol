@@ -1,6 +1,6 @@
 [![ReadTheDocs](https://readthedocs.org/projects/border-patrol/badge/?version=latest)](https://border-patrol.readthedocs.io/en/latest/?badge=latest)
 [![Coveralls](https://img.shields.io/coveralls/github/pyscaffold/border-patrol/master.svg)](https://coveralls.io/r/pyscaffold/border-patrol)
-[![PyPI-Server](https://img.shields.io/pypi/v/border-patrol.svg)](https://pypi.org/project/border-patrol/)    
+[![PyPI-Server](https://img.shields.io/pypi/v/border-patrol.svg)](https://pypi.org/project/border-patrol/)
 
 # Border-Patrol 
 
@@ -17,7 +17,7 @@ end of your application, even if it crashed.
 
 ## Usage
 
-Border-Patrol is really simple to use, just install it with `pip install border-patrol` 
+Border-Patrol is really simple to use, just install it with `pip install border-patrol`
 and import it before any other package, e.g.:
 ```python
 from border_patrol import with_print_stdout
@@ -26,23 +26,23 @@ import pandas as pd
 ```
 If you run those lines in a script, you will get a similar output to this one:
 ```console
-Python version is 3.6.7 |Anaconda, Inc.| (default, Oct 23 2018, 14:01:38) 
+Python version is 3.6.7 |Anaconda, Inc.| (default, Oct 23 2018, 14:01:38)
 [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
 Following packages were imported:
-PACKAGE         VERSION   PATH                                                                                        
-border_patrol   0.1       /Users/fwilhelm/Sources/border_patrol/src/border_patrol                                     
-cycler          0.10.0    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/cycler.py             
-dateutil        2.7.5     /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/dateutil/__init__.py  
+PACKAGE         VERSION   PATH                       
+border_patrol   0.1       /Users/fwilhelm/Sources/border_patrol/src/border_patrol
+cycler          0.10.0    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/cycler.py
+dateutil        2.7.5     /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/dateutil/__init__.py
 matplotlib      2.2.3     /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/matplotlib/__init__.py
-numpy           1.15.1    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/numpy/__init__.py     
-pandas          0.23.4    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pandas/__init__.py    
-pyparsing       2.3.0     /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pyparsing.py          
-pytz            2018.7    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pytz/__init__.py      
-six             1.11.0    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/six.py  
+numpy           1.15.1    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/numpy/__init__.py
+pandas          0.23.4    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pandas/__init__.py
+pyparsing       2.3.0     /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pyparsing.py
+pytz            2018.7    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/pytz/__init__.py 
+six             1.11.0    /Users/fwilhelm/anaconda/envs/lib/python3.6/site-packages/six.py
 ```
 
 If you import `with_print_stdout`, Border-Patrol will use `print` as output function whereas `with_print_stderr` will
-print to standard error. Since most production applications will rather use the `logging` module, you can tell 
+print to standard error. Since most production applications will rather use the `logging` module, you can tell
 Border-Patrol to use it by importing `with_log_{error|warning|info|debug}`.
 For instance `from border_patrol import with_log_info` will log the final report by using the `INFO` logging level.
 
@@ -56,10 +56,9 @@ tracking can be circumvented by using `border_patrol.builtin_import`.
 Border-Patrol is actually quite simple. It overwrites the `__import__` function in Python's `builtins` package to track
 every imported package. Additionally it registers an `atexit` handler to be called when your application finishes and
 reports all imported modules. To avoid any problem registering these things more than once, Border-Patrol is implemented
-as Singleton and thus it is *not* thread-safe. 
+as Singleton and thus it is *not* thread-safe.
 
 
 ## Note
 
-This project has been set up using PyScaffold 3.1. For details and usage
-information on PyScaffold see https://pyscaffold.org/.
+This project has been set up using PyScaffold 3.1. For details and usage information on PyScaffold see https://pyscaffold.org/.
