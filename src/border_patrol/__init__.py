@@ -103,6 +103,15 @@ def package_path(package):
 class BorderPatrol(object):
     """Border-Patrol singleton class to track imports of packages.
 
+    Since BorderPatrol is a singleton, passing ``None`` for a value will
+    keep the currently set value while passing a value will update the
+    corresponding parameter.
+
+    Args:
+        report_fun (callable): output function for reporting imports
+        ignore_std_lib (bool): ignore imports of Python's stdlib, default True
+        report_py (bool): also report the Python runtime version, default True
+
     Attributes:
         template (str): string template for the report
     """
@@ -116,20 +125,6 @@ class BorderPatrol(object):
         return it
 
     def __init__(self, report_fun=None, ignore_std_lib=None, report_py=None):
-        """Constructor of BorderPatrol
-
-        Since BorderPatrol is a singleton, passing ``None`` for a value will
-        keep the currently set value while passing a value will update the
-        corresponding parameter.
-
-        Args:
-            report_fun (callable):
-                output function for reporting imports
-            ignore_std_lib (bool):
-                ignore imports of Python's stdlib, default True
-            report_py (bool):
-                also report the Python runtime version, default True
-        """
         # retrieve following attributes from singleton instance if already set
         if report_fun is None:
             self.report_fun = getattr(self, 'report_fun', logging.debug)
