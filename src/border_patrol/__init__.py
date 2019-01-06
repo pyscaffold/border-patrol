@@ -101,11 +101,10 @@ def package_path(package):
 
 
 class BorderPatrol(object):
-    """Border-Patrol singleton tracking imports
+    """Border-Patrol singleton class to track imports of packages.
 
-    Args:
-        report_fun (callable): output function for reporting imports
-        ignore_std_lib (bool): ignore imports of Python's stdlib
+    Attributes:
+        template (str): string template for the report
     """
     # defines this class as singleton
     def __new__(cls, *args, **kwargs):
@@ -116,7 +115,21 @@ class BorderPatrol(object):
         it.__init__(*args, **kwargs)
         return it
 
-    def __init__(self, report_fun=None, ignore_std_lib=None):
+    def __init__(self, report_fun=None, ignore_std_lib=None, report_py=None):
+        """Constructor of BorderPatrol
+
+        Since BorderPatrol is a singleton, passing ``None`` for a value will
+        keep the currently set value while passing a value will update the
+        corresponding parameter.
+
+        Args:
+            report_fun (callable):
+                output function for reporting imports
+            ignore_std_lib (bool):
+                ignore imports of Python's stdlib, default True
+            report_py (bool):
+                also report the Python runtime version, default True
+        """
         # retrieve following attributes from singleton instance if already set
         if report_fun is None:
             self.report_fun = getattr(self, 'report_fun', logging.debug)
@@ -128,8 +141,14 @@ class BorderPatrol(object):
         else:
             self.ignore_std_lib = ignore_std_lib
 
+        if report_py is None:
+            self.report_py = getattr(self, 'report_py', True)
+        else:
+            self.report_py = report_py
+
         self.registered = getattr(self, 'registered', False)
         self.packages = getattr(self, 'packages', [builtin_import(__name__)])
+        self.template = getattr(self, 'template', "{pkg}   {ver}   {path}")
 
     def __call__(self, *args, **kwargs):
         """Wraps the builtin import to track libraries"""
@@ -190,32 +209,29 @@ class BorderPatrol(object):
                  package_path(package))
                 for package in packages]
 
-    def __repr__(self):
-        return str(self.report())
-
     def at_exit(self):
         """Handler to be called at exit"""
         self.report_fun(str(self))
 
     def __str__(self):
-        msg = ["Python version is {}".format(sys.version)]
+        msg = []
+        if self.report_py:
+            msg += ["Python version is {}".format(sys.version)]
         msg += ["Following packages were imported:"]
-        template = "{}   {}   {}"
-
         report = self.report()
         names, versions, paths = zip(*report)
         name_just = max(len(name) for name in names)
         version_just = max(len(version) for version in versions)
         path_just = max(len(path) for path in paths)
-        msg.append(template.format(
-            'PACKAGE'.ljust(name_just),
-            'VERSION'.ljust(version_just),
-            'PATH'.ljust(path_just)
+        msg.append(self.template.format(
+            pkg='PACKAGE'.ljust(name_just),
+            ver='VERSION'.ljust(version_just),
+            path='PATH'.ljust(path_just)
         ))
         for name, version, path in sorted(report, key=itemgetter(0)):
-            msg.append(template.format(
-                name.ljust(name_just),
-                version.ljust(version_just),
-                path.ljust(path_just)
+            msg.append(self.template.format(
+                pkg=name.ljust(name_just),
+                ver=version.ljust(version_just),
+                path=path.ljust(path_just)
             ))
         return '\n'.join(msg)

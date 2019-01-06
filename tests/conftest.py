@@ -12,7 +12,7 @@ import pytest
 
 
 @pytest.fixture()
-def border_patrol():
+def bpatrol():
     """Return BorderPatrol singleton"""
     from border_patrol import BorderPatrol
     return BorderPatrol()

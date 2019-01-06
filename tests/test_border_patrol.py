@@ -6,76 +6,89 @@ import logging
 
 import numpy as np
 import sklearn
+from border_patrol import BorderPatrol
 
 
-def test_capture_import(border_patrol):
-    report = border_patrol.report()
+def test_capture_import(bpatrol):
+    report = bpatrol.report()
     assert len(report) > 1
     pkgs, _, _ = zip(*report)
     assert 'numpy' in pkgs
 
 
-def test_log_error(border_patrol, caplog):
+def test_log_error(bpatrol, caplog):
     from border_patrol import with_log_error
     with caplog.at_level(logging.ERROR):
-        border_patrol.at_exit()
+        bpatrol.at_exit()
         assert re.search("Following packages were imported:*", caplog.text)
 
 
-def test_log_warning(border_patrol, caplog):
+def test_log_warning(bpatrol, caplog):
     from border_patrol import with_log_warning
     with caplog.at_level(logging.WARNING):
-        border_patrol.at_exit()
+        bpatrol.at_exit()
         assert re.search("Following packages were imported:*", caplog.text)
 
 
-def test_log_info(border_patrol, caplog):
+def test_log_info(bpatrol, caplog):
     from border_patrol import with_log_info
     with caplog.at_level(logging.INFO):
-        border_patrol.at_exit()
+        bpatrol.at_exit()
         assert re.search("Following packages were imported:*", caplog.text)
 
 
-def test_log_debug(border_patrol, caplog):
+def test_log_debug(bpatrol, caplog):
     from border_patrol import with_log_debug
     with caplog.at_level(logging.INFO):
-        border_patrol.at_exit()
+        bpatrol.at_exit()
         assert not re.search("Following packages were imported:*", caplog.text)
     with caplog.at_level(logging.DEBUG):
-        border_patrol.at_exit()
+        bpatrol.at_exit()
         assert re.search("Following packages were imported:*", caplog.text)
 
 
-def test_print_stderr(border_patrol, capsys):
+def test_print_stderr(bpatrol, capsys):
     from border_patrol import with_print_stderr
-    border_patrol.at_exit()
+    bpatrol.at_exit()
     stderr_out = capsys.readouterr().err
     assert re.search("Following packages were imported:*", stderr_out)
 
 
-def test_dont_ignore_stdlib(border_patrol):
-    border_patrol.ignore_std_lib = False
-    report = border_patrol.report()
+def test_dont_ignore_stdlib(bpatrol):
+    bpatrol.ignore_std_lib = False
+    report = bpatrol.report()
     assert len(report) > 1
     pkgs, _, _ = zip(*report)
     assert 'os' in pkgs
 
 
-def test_singleton_constructor(border_patrol):
-    from border_patrol import BorderPatrol
-    new_border_patrol = BorderPatrol()
+def test_singleton_constructor(bpatrol):
+    new_bpatrol = BorderPatrol()
     for attr in ('report_fun', 'registered', 'ignore_std_lib', 'packages'):
-        assert getattr(new_border_patrol, attr) == getattr(border_patrol, attr)
-    before = getattr(border_patrol, 'ignore_std_lib')
-    new_border_patrol = BorderPatrol(ignore_std_lib=not before)
-    assert border_patrol.ignore_std_lib is not before
+        assert getattr(new_bpatrol, attr) == getattr(bpatrol, attr)
+    before = getattr(bpatrol, 'ignore_std_lib')
+    BorderPatrol(ignore_std_lib=not before)
+    assert bpatrol.ignore_std_lib is not before
 
 
-def test_register(border_patrol):
+def test_register(bpatrol):
     from border_patrol import builtin_import
-    assert border_patrol.registered
-    border_patrol.unregister()
+    assert bpatrol.registered
+    bpatrol.unregister()
     assert builtins.__import__ is builtin_import
-    border_patrol.unregister()
-    border_patrol.register()
-    assert builtins.__import__ is border_patrol
+    bpatrol.unregister()
+    bpatrol.register()
+    assert builtins.__import__ is bpatrol
+
+
+def test_report_py(caplog):
+    bpatrol = BorderPatrol(report_fun=logging.info,
+                           report_py=False)
+    assert bpatrol.report_py is False
+    with caplog.at_level(logging.INFO):
+        bpatrol.at_exit()
+    assert not re.search("Python version is", caplog.text)
+    bpatrol.report_py = True
+    with caplog.at_level(logging.INFO):
+        bpatrol.at_exit()
+    assert re.search("Python version is", caplog.text)

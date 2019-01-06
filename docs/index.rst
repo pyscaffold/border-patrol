@@ -52,9 +52,15 @@ How does it work?
 =================
 
 Border-Patrol is actually quite simple. It overwrites the ``__import__`` function in Python's ``builtins`` package to track
-every imported package. Additionally it registers an ``atexit`` handler to be called when your application finishes and
+every imported module. For each module the corresponding package is determined and the version number is retrieved with
+the help of the ``__version__`` attribute which most professional libraries provide at the package level. If this fails
+the distribution name for the package is determined, e.g. ``scikit-learn`` is the distribution containing the ``sklearn`` package,
+with the help of ``pkg_resources`` which is a part of ``setuptools``. Then the distribution name is used to determine the
+version number also using ``pkg_resources`` similar to how ``pip`` would do it.
+
+Finally, Border-Patrol registers an ``atexit`` handler to be called when your application finishes and
 reports all imported modules. To avoid any problem registering these things more than once, Border-Patrol is implemented
-as Singleton and thus it is *not* thread-safe.
+as a singleton and thus it is *not* thread-safe.
 
 
 Note
