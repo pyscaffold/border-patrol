@@ -6,11 +6,11 @@
 
 Border-Patrol logs all imported packages and their version to support you while debugging. In 95% of all cases when
 something suddenly breaks in production it is due to some different version in one of your requirements. Pinning down the
-versions of all your dependencies and dependencies of dependencies inside a virtual environments helps you to overcome
+versions of all your dependencies and dependencies of dependencies inside a virtual environment helps you to overcome
 this problem but is quite cumbersome and thus this method is not always applied in practice. Also sometimes, like when
 you are using PySpark, you might not be 100% sure which library versions are installed on some cluster nodes.
 
-With Border-Patrol you can easily find the culprit by looking in the logs of the last working versions and compare it
+With Border-Patrol you can easily find the culprit by looking in the logs of the last working version and compare it
 to the failing one since Border-Patrol will list all imported packages and their corresponding version right at the
 end of your application, even if it crashed.
 
