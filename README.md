@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/pyscaffold/border-patrol.svg?branch=master)](https://travis-ci.org/pyscaffold/border-patrol)
 [![ReadTheDocs](https://readthedocs.org/projects/border-patrol/badge/?version=latest)](https://border-patrol.readthedocs.io/en/latest/?badge=latest)
 [![Coveralls](https://img.shields.io/coveralls/github/pyscaffold/border-patrol/master.svg)](https://coveralls.io/r/pyscaffold/border-patrol)
 [![PyPI-Server](https://img.shields.io/pypi/v/border-patrol.svg)](https://pypi.org/project/border-patrol/)
