@@ -97,7 +97,9 @@ def package_path(package):
     Returns:
         str: path of package
     """
-    return getattr(package, "__file__", UNKNOWN)
+    path = getattr(package, "__file__", None)
+    path = UNKNOWN if path is None else path
+    return path
 
 
 class BorderPatrol(object):
