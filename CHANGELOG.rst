@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 1.0
+===========
+
+- After years of testing, let's call it stable ;-)
+
 Version 0.3
 ===========
 
