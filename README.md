@@ -3,6 +3,7 @@
 [![Coveralls](https://img.shields.io/coveralls/github/pyscaffold/border-patrol/master.svg)](https://coveralls.io/r/pyscaffold/border-patrol)
 [![PyPI-Server](https://img.shields.io/pypi/v/border-patrol.svg)](https://pypi.org/project/border-patrol/)
 [![Downloads](https://pepy.tech/badge/border-patrol/month)](https://pepy.tech/project/border-patrol)
+[![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=ff69b4)](https://github.com/sponsors/FlorianWilhelm)
 
 # Border-Patrol
 
