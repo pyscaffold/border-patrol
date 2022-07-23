@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 1.0.1
+=============
+
+- Added funding note to github
+- Publishing via API token
+
 Version 1.0
 ===========
 
