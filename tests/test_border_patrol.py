@@ -1,11 +1,12 @@
 from border_patrol import with_print_stdout
-import re
-import sys
+
 import builtins
 import logging
+import re
 
 import numpy as np
 import sklearn
+
 from border_patrol import BorderPatrol
 
 
@@ -13,7 +14,7 @@ def test_capture_import(bpatrol):
     report = bpatrol.report()
     assert len(report) > 1
     pkgs, _, _ = zip(*report)
-    assert 'numpy' in pkgs
+    assert "numpy" in pkgs
 
 
 def test_log_error(bpatrol, caplog):
@@ -59,20 +60,21 @@ def test_dont_ignore_stdlib(bpatrol):
     report = bpatrol.report()
     assert len(report) > 1
     pkgs, _, _ = zip(*report)
-    assert 'os' in pkgs
+    assert "os" in pkgs
 
 
 def test_singleton_constructor(bpatrol):
     new_bpatrol = BorderPatrol()
-    for attr in ('report_fun', 'registered', 'ignore_std_lib', 'packages'):
+    for attr in ("report_fun", "registered", "ignore_std_lib", "packages"):
         assert getattr(new_bpatrol, attr) == getattr(bpatrol, attr)
-    before = getattr(bpatrol, 'ignore_std_lib')
+    before = bpatrol.ignore_std_lib
     BorderPatrol(ignore_std_lib=not before)
     assert bpatrol.ignore_std_lib is not before
 
 
 def test_register(bpatrol):
     from border_patrol import builtin_import
+
     assert bpatrol.registered
     bpatrol.unregister()
     assert builtins.__import__ is builtin_import
@@ -82,8 +84,7 @@ def test_register(bpatrol):
 
 
 def test_report_py(caplog):
-    bpatrol = BorderPatrol(report_fun=logging.info,
-                           report_py=False)
+    bpatrol = BorderPatrol(report_fun=logging.info, report_py=False)
     assert bpatrol.report_py is False
     with caplog.at_level(logging.INFO):
         bpatrol.at_exit()

@@ -4,8 +4,9 @@
 Dummy file for manual testing
 """
 from border_patrol import with_log_info
-import sys
+
 import logging
+import sys
 
 import pandas
 

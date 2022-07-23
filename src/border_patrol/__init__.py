@@ -2,32 +2,35 @@
 """
 Main module holding the actual functionality of Border-Patrol
 """
-import sys
-import os.path
-import inspect
 import atexit
-import logging
 import builtins
-from operator import itemgetter
+import inspect
+import logging
+import os.path
+import sys
 from builtins import __import__ as builtin_import
-from pkg_resources import get_distribution, DistributionNotFound, working_set
+from operator import itemgetter
 
-UNKNOWN = 'unknown'
-BUILTINS = list(sys.builtin_module_names) + ['__future__']
+from pkg_resources import DistributionNotFound, get_distribution, working_set
+
+UNKNOWN = "unknown"
+BUILTINS = list(sys.builtin_module_names) + ["__future__"]
 
 try:
-    __version__ = get_distribution('border-patrol').version
+    __version__ = get_distribution("border-patrol").version
 except DistributionNotFound:
     __version__ = UNKNOWN
 
 __file__ = os.path.join(
-    os.getcwd(), os.path.dirname(inspect.getfile(inspect.currentframe())))
+    os.getcwd(), os.path.dirname(inspect.getfile(inspect.currentframe()))
+)
 
 logger = logging.getLogger(__name__)
 
 
 class IdentityDict(dict):
     """Dictionary returning key by default"""
+
     def __missing__(self, key):
         return key
 
@@ -41,7 +44,7 @@ def get_pkg_to_dist_map():
     mapping = IdentityDict()
     for dist in working_set:
         try:
-            pkgs = dist.get_metadata('top_level.txt')
+            pkgs = dist.get_metadata("top_level.txt")
         except Exception:
             pass
         else:
@@ -59,7 +62,7 @@ def get_package(module):
     Returns:
         str: name of module's package
     """
-    return module.__name__.split('.')[0]
+    return module.__name__.split(".")[0]
 
 
 def package_version(package, pkg_to_dist_map=None):
@@ -117,6 +120,7 @@ class BorderPatrol(object):
     Attributes:
         template (str): string template for the report
     """
+
     # defines this class as singleton
     def __new__(cls, *args, **kwargs):
         it = cls.__dict__.get("__it__")
@@ -129,23 +133,23 @@ class BorderPatrol(object):
     def __init__(self, report_fun=None, ignore_std_lib=None, report_py=None):
         # retrieve following attributes from singleton instance if already set
         if report_fun is None:
-            self.report_fun = getattr(self, 'report_fun', logging.debug)
+            self.report_fun = getattr(self, "report_fun", logging.debug)
         else:
             self.report_fun = report_fun
 
         if ignore_std_lib is None:
-            self.ignore_std_lib = getattr(self, 'ignore_std_lib', True)
+            self.ignore_std_lib = getattr(self, "ignore_std_lib", True)
         else:
             self.ignore_std_lib = ignore_std_lib
 
         if report_py is None:
-            self.report_py = getattr(self, 'report_py', True)
+            self.report_py = getattr(self, "report_py", True)
         else:
             self.report_py = report_py
 
-        self.registered = getattr(self, 'registered', False)
-        self.packages = getattr(self, 'packages', [builtin_import(__name__)])
-        self.template = getattr(self, 'template', "{pkg}   {ver}   {path}")
+        self.registered = getattr(self, "registered", False)
+        self.packages = getattr(self, "packages", [builtin_import(__name__)])
+        self.template = getattr(self, "template", "{pkg}   {ver}   {path}")
 
     def __call__(self, *args, **kwargs):
         """Wraps the builtin import to track libraries"""
@@ -198,13 +202,20 @@ class BorderPatrol(object):
         packages = self.packages
         pkg_to_dist_map = get_pkg_to_dist_map()
         if self.ignore_std_lib:
-            packages = [package for package in packages
-                        if package.__name__ in pkg_to_dist_map.keys()]
+            packages = [
+                package
+                for package in packages
+                if package.__name__ in pkg_to_dist_map.keys()
+            ]
 
-        return [(package.__name__,
-                 package_version(package, pkg_to_dist_map),
-                 package_path(package))
-                for package in packages]
+        return [
+            (
+                package.__name__,
+                package_version(package, pkg_to_dist_map),
+                package_path(package),
+            )
+            for package in packages
+        ]
 
     def at_exit(self):
         """Handler to be called at exit"""
@@ -220,15 +231,19 @@ class BorderPatrol(object):
         name_just = max(len(name) for name in names)
         version_just = max(len(version) for version in versions)
         path_just = max(len(path) for path in paths)
-        msg.append(self.template.format(
-            pkg='PACKAGE'.ljust(name_just),
-            ver='VERSION'.ljust(version_just),
-            path='PATH'.ljust(path_just)
-        ))
+        msg.append(
+            self.template.format(
+                pkg="PACKAGE".ljust(name_just),
+                ver="VERSION".ljust(version_just),
+                path="PATH".ljust(path_just),
+            )
+        )
         for name, version, path in sorted(report, key=itemgetter(0)):
-            msg.append(self.template.format(
-                pkg=name.ljust(name_just),
-                ver=version.ljust(version_just),
-                path=path.ljust(path_just)
-            ))
-        return '\n'.join(msg)
+            msg.append(
+                self.template.format(
+                    pkg=name.ljust(name_just),
+                    ver=version.ljust(version_just),
+                    path=path.ljust(path_just),
+                )
+            )
+        return "\n".join(msg)

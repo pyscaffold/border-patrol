@@ -15,4 +15,5 @@ import pytest
 def bpatrol():
     """Return BorderPatrol singleton"""
     from border_patrol import BorderPatrol
+
     return BorderPatrol()

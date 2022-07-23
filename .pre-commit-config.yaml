@@ -1,4 +1,4 @@
-exclude: '^docs/conf.py'
+exclude: '^docs/conf.py|^tests/dummy.py|^tests/test_border_patrol.py'
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
